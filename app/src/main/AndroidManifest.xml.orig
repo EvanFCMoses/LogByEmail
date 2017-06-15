@@ -9,7 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+<<<<<<< HEAD
+            android:name=".activities.MainActivity"
+=======
             android:name=".MainActivity"
+>>>>>>> be9d15d0a82543781c4d660e7878b096734028d5
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

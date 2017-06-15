@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/LogByEmail-master.iml" filepath="$PROJECT_DIR$/LogByEmail-master.iml" />
+=======
       <module fileurl="file://$PROJECT_DIR$/ChurchForm.iml" filepath="$PROJECT_DIR$/ChurchForm.iml" />
+>>>>>>> be9d15d0a82543781c4d660e7878b096734028d5
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
