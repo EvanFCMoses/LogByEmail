@@ -10,69 +10,44 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.evanmoses.churchform.MainActivity"
+    tools:context="com.evanmoses.churchform.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
 
-    <fragment
+
+    <!--<fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="android.support.v4.app.ListFragment"
-        android:id="@+id/fragment" />
+        android:id="@+id/fragment" />-->
 
-    <include layout="@layout/label_row"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:layout_below="@+id/include"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:id="@+id/editText"
-        android:hint="Date" />
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/editText2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/editText3"
-        android:hint="Daily Ministry Information"
-        android:layout_alignParentEnd="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/top_information"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/day_row">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:layout_below="@+id/editText3"
-        android:layout_alignParentStart="true"
-        android:id="@+id/editText4"
-        android:hint="Daily Mileage" />
+                <include layout="@layout/label_row"/>
 
-    <Button
-        android:text="Add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText4"
-        android:layout_alignEnd="@+id/editText4"
-        android:id="@+id/add_day_button" />
+            </FrameLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_list_view">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:hint="Place of Labor"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentStart="true" />
+            </ListView>
+        </LinearLayout>
+
 
     </LinearLayout>
 
