@@ -1,8 +1,11 @@
 package com.evanmoses.churchform.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.evanmoses.churchform.objects.DayReport;
 
 /**
  * Created by Evan on 6/4/2017.
@@ -33,6 +36,28 @@ public class DayReportDao extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
+
+
+    public void insert(DayReport dr){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = this.getReadableDatabase();
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DayReportContract.DayReports.COLUMN_NAME_DATE, dr.date);
+        values.put(DayReportContract.DayReports.COLUMN_NAME_INFORMATION, dr.information);
+        values.put(DayReportContract.DayReports.COLUMN_NAME_LOCATION, dr.location);
+        values.put(DayReportContract.DayReports.COLUMN_NAME_MILEAGE, dr.mileage);
+// Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(DayReportContract.DayReports.TABLE_NAME, null, values);
+    }
+
+
+
+
+
+
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over

@@ -142,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void populate_row(String date, String place, String information, String mileage){
 
+        //SAVE TO DATABASE
+
         DayReport toAdd = new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage));
         dayReports.add(toAdd);
 
