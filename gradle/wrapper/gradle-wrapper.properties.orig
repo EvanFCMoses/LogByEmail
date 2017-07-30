@@ -1,14 +1,10 @@
-<<<<<<< HEAD
+<<<<<<< Updated upstream
 #Sun Apr 09 12:17:08 CDT 2017
 =======
-#Mon Dec 28 10:00:20 PST 2015
->>>>>>> be9d15d0a82543781c4d660e7878b096734028d5
+#Sun Jul 09 09:47:46 CDT 2017
+>>>>>>> Stashed changes
 distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
-<<<<<<< HEAD
 distributionUrl=https\://services.gradle.org/distributions/gradle-3.3-all.zip
-=======
-distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip
->>>>>>> be9d15d0a82543781c4d660e7878b096734028d5
