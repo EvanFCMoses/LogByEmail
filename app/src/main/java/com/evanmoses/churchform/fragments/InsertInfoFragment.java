@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.evanmoses.churchform.R;
 import com.evanmoses.churchform.activities.MainActivity;
+import com.evanmoses.churchform.dao.DayReportDao;
+import com.evanmoses.churchform.objects.DayReport;
 
 /**
  * Created by Evan on 4/26/2017.
@@ -19,6 +21,7 @@ import com.evanmoses.churchform.activities.MainActivity;
 
 public class InsertInfoFragment extends DialogFragment
 {
+    private DayReportDao dayReportDao;
 
     private View v;
     static public InsertInfoFragment newInstance() {
@@ -35,6 +38,7 @@ public class InsertInfoFragment extends DialogFragment
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        dayReportDao = new DayReportDao(getActivity().getBaseContext());
 
     }
 
