@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.evanmoses.churchform.DayRowListAdapter;
 import com.evanmoses.churchform.R;
+import com.evanmoses.churchform.dao.DayReportDao;
 import com.evanmoses.churchform.fragments.ChangeMonthDialog;
 import com.evanmoses.churchform.fragments.InsertInfoFragment;
 import com.evanmoses.churchform.objects.DayReport;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> filled_list;
     private ArrayList<DayReport> dayReports;
     private DayRowListAdapter adapter;
+    private DayReportDao dayReportDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = context.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        dayReportDao = new DayReportDao(context);
 
         String currentMonth = sharedPref.getString("CurrentMonth","January");
         String currentYear = sharedPref.getString("CurrentYear","2017");
@@ -142,9 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void populate_row(String date, String place, String information, String mileage){
 
-        //SAVE TO DATABASE
-
         DayReport toAdd = new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage));
+        dayReportDao.insert(toAdd);
+
+
         dayReports.add(toAdd);
 
         HashMap<String,String> temp=new HashMap<>();
@@ -176,12 +181,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveRecords(){
-        //TODO implement when there is a dao
+        for(int i = 0; i<dayReports.size(); i++){
+            dayReportDao.insert(dayReports.get(i));
+        }
     }
 
-    public ArrayList<HashMap<String, String>> loadRecords(String month){
-        //TODO implement when there is a dao
-        return null;
+    public void loadRecords(String month){
+        //TODO
+        String selectionString;
+        String[] selectionArgs;
+
+        
+
+        dayReports = dayReportDao.get(,)
     }
 
     public void showDialog() {
