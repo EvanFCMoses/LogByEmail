@@ -27,6 +27,8 @@ import com.evanmoses.churchform.fragments.InsertInfoFragment;
 import com.evanmoses.churchform.objects.DayReport;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import static com.evanmoses.churchform.constants.MultiColumnListNames.FIRST_COLUMN;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<DayReport> dayReports;
     private DayRowListAdapter adapter;
     private DayReportDao dayReportDao;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
         context = activity.getBaseContext();
 
-        SharedPreferences sharedPref = context.getSharedPreferences(
+        prefs = context.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         dayReportDao = new DayReportDao(context);
 
-        String currentMonth = sharedPref.getString("CurrentMonth","January");
-        String currentYear = sharedPref.getString("CurrentYear","2017");
+        String currentMonth = prefs.getString("CurrentMonth","January");
+        String currentYear = prefs.getString("CurrentYear","2017");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(currentYear + " - " + currentMonth);
@@ -146,7 +149,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void populate_row(String date, String place, String information, String mileage){
 
-        DayReport toAdd = new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage));
+
+
+
+        DayReport toAdd = new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage), prefs.getString("CurrentYear","2017") +
+                ":"+dayReportDao.getMonthNumberStringNormalized(dayReportDao.getMonthNumberFromName(prefs.getString("CurrentMonth","January")))+":"+date);
+
         dayReportDao.insert(toAdd);
 
 
@@ -193,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         
 
-        dayReports = dayReportDao.get(,)
+        dayReports = dayReportDao.get("",new String[]{});
     }
 
     public void showDialog() {

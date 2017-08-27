@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.evanmoses.churchform.objects.DayReport;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -18,8 +20,8 @@ import java.util.List;
 
 public class DayReportDao extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "DayReports.db";
+    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "DayReports.db";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DayReportContract.DayReports.TABLE_NAME + " (" +
@@ -27,7 +29,8 @@ public class DayReportDao extends SQLiteOpenHelper {
                      DayReportContract.DayReports.COLUMN_NAME_DATE + " TEXT," +
                      DayReportContract.DayReports.COLUMN_NAME_LOCATION + " TEXT," +
                      DayReportContract.DayReports.COLUMN_NAME_INFORMATION + " TEXT," +
-                     DayReportContract.DayReports.COLUMN_NAME_MILEAGE + " TEXT)";
+                     DayReportContract.DayReports.COLUMN_NAME_MILEAGE + " TEXT," +
+                     DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DayReportContract.DayReports.TABLE_NAME;
@@ -52,6 +55,7 @@ public class DayReportDao extends SQLiteOpenHelper {
         values.put(DayReportContract.DayReports.COLUMN_NAME_INFORMATION, dr.information);
         values.put(DayReportContract.DayReports.COLUMN_NAME_LOCATION, dr.location);
         values.put(DayReportContract.DayReports.COLUMN_NAME_MILEAGE, dr.mileage);
+        values.put(DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP, dr.dayAndMonth);
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DayReportContract.DayReports.TABLE_NAME, null, values);
 
@@ -59,9 +63,9 @@ public class DayReportDao extends SQLiteOpenHelper {
     }
 
 
-    public List<DayReport> get(String select, String[] selectionArgs){
+    public ArrayList<DayReport> get(String select, String[] selectionArgs){
         SQLiteDatabase db = this.getReadableDatabase();
-        List<DayReport> reports = new ArrayList<>();
+        ArrayList<DayReport> reports = new ArrayList<>();
 
         String sortOrder = DayReportContract.DayReports.COLUMN_NAME_DATE + " DESC";
 
@@ -83,9 +87,11 @@ public class DayReportDao extends SQLiteOpenHelper {
                     dr.information = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_INFORMATION));
                     dr.location = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_LOCATION));
                     dr.mileage = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_MILEAGE)));
+                    dr.dayAndMonth = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP));
                     reports.add(dr);
                 }while(cursor.moveToNext());
             }
+            cursor.close();
         }
 
         return reports;
@@ -98,6 +104,61 @@ public class DayReportDao extends SQLiteOpenHelper {
 
 
 
+    public List<DayReport> getByMonth(int month, int year){
+
+
+        String beginningTimestamp,endingTimestamp;
+        switch(month){
+            case 0:
+                beginningTimestamp=""+(year-1)+":12:31";
+                endingTimestamp=""+(year)+"02:01";
+                break;
+            case 11:
+                beginningTimestamp=""+(year)+":11:30";
+                endingTimestamp=""+(year+1)+":01:01";
+                break;
+            case -1:
+                //we don't deal with time travelers.
+                //this is given by getByMonthString if something has gone wrong.
+                return null;
+            default:
+                Calendar calBefore = Calendar.getInstance();
+                calBefore.set(Calendar.MONTH,month-1);
+
+                beginningTimestamp=""+(year)+":"+(month-1)+":"+(calBefore.getActualMaximum(Calendar.DAY_OF_MONTH));
+                endingTimestamp=""+(year)+":"+(month+1)+":01";
+                break;
+        }
+
+        return get("WHERE "+DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP+"<? and "+DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP+">? ",new String[]{endingTimestamp,beginningTimestamp});
+
+    }
+
+
+    public List<DayReport> getByMonthString(String monthString, int year){
+        return getByMonth(getMonthNumberFromName(monthString), year);
+    }
+
+    public int getMonthNumberFromName(String monthName){
+        String[] monthNames = new DateFormatSymbols().getMonths();
+        int index=-1;
+        for(int i=0; i<monthNames.length;i++){
+            if(monthNames[i].equals(monthName)){
+                index=i;
+            }
+        }
+        return index;
+    }
+
+    public String getMonthNumberStringNormalized(int monthNumber){
+        String normalizedMonthNumber;
+        if(monthNumber<10){
+            normalizedMonthNumber = "0" + monthNumber;
+        }else{
+            normalizedMonthNumber = "" + monthNumber;
+        }
+        return normalizedMonthNumber;
+    }
 
 
 
