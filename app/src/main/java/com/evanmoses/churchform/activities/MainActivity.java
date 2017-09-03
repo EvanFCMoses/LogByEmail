@@ -174,8 +174,11 @@ public class MainActivity extends AppCompatActivity {
     public void changeMonth(String month, int currentYear){
         saveRecords();
         filled_list.clear();
-        adapter.notifyDataSetChanged();
         loadRecords(month);
+        for(int i = 0; i < dayReports.size(); i++){
+            populate_row(""+dayReports.get(i).date,dayReports.get(i).location,dayReports.get(i).information,""+dayReports.get(i).mileage);
+        }
+        adapter.notifyDataSetChanged();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(currentYear + " - " + month);
 
@@ -195,13 +198,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadRecords(String month){
-        //TODO
-        String selectionString;
-        String[] selectionArgs;
 
-        
+        int currentYear = Integer.parseInt(prefs.getString("CurrentYear","2017"));
 
-        dayReports = dayReportDao.get("",new String[]{});
+        dayReports = dayReportDao.getByMonthString(month,currentYear);
     }
 
     public void showDialog() {
