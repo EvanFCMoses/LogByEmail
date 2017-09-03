@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.evanmoses.churchform.objects.DayReport;
 
@@ -36,17 +37,16 @@ public class DayReportDao extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DayReportContract.DayReports.TABLE_NAME;
 
 
-
     public DayReportDao(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     public void onCreate(SQLiteDatabase db) {
 
         db = getWritableDatabase();
         db.execSQL(SQL_CREATE_ENTRIES);
         db.close();
     }
-
 
     public void insert(DayReport dr){
         // Gets the data repository in write mode
@@ -66,50 +66,52 @@ public class DayReportDao extends SQLiteOpenHelper {
 
     }
 
-
     public ArrayList<DayReport> get(String select, String[] selectionArgs){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<DayReport> reports = new ArrayList<>();
 
         String sortOrder = DayReportContract.DayReports.COLUMN_NAME_DATE + " DESC";
 
-        Cursor cursor = db.query(
-                DayReportContract.DayReports.TABLE_NAME,
-                null,
-                select,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
+        try {
+            Cursor cursor = db.query(
+                    DayReportContract.DayReports.TABLE_NAME,
+                    null,
+                    select,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder
+            );
 
-        if(cursor!=null){
-            if(cursor.moveToFirst()){
-                do {
-                    DayReport dr = new DayReport();
-                    dr.date = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_DATE)));
-                    dr.information = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_INFORMATION));
-                    dr.location = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_LOCATION));
-                    dr.mileage = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_MILEAGE)));
-                    dr.dayAndMonth = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP));
-                    reports.add(dr);
-                }while(cursor.moveToNext());
+            if(cursor!=null){
+                if(cursor.moveToFirst()){
+                    do {
+                        DayReport dr = new DayReport();
+                        dr.date = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_DATE)));
+                        dr.information = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_INFORMATION));
+                        dr.location = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_LOCATION));
+                        dr.mileage = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_MILEAGE)));
+                        dr.dayAndMonth = cursor.getString(cursor.getColumnIndex(DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP));
+                        reports.add(dr);
+                    }while(cursor.moveToNext());
+                }
+                cursor.close();
             }
-            cursor.close();
+        }catch(Exception e){
+            Log.v("fixify","cursor exception: " + e.toString());
         }
         db.close();
+
 
         return reports;
 
     }
 
-    public List<DayReport> all(){
+    public ArrayList<DayReport> all(){
         return get(null,null);
     }
 
-
-
-    public List<DayReport> getByMonth(int month, int year){
+    public ArrayList<DayReport> getByMonth(int month, int year){
 
 
         String beginningTimestamp,endingTimestamp;
@@ -135,12 +137,11 @@ public class DayReportDao extends SQLiteOpenHelper {
                 break;
         }
 
-        return get("WHERE "+DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP+"<? and "+DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP+">? ",new String[]{endingTimestamp,beginningTimestamp});
+        return get(DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP+"<? and "+DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP+">? ",new String[]{endingTimestamp,beginningTimestamp});
 
     }
 
-
-    public List<DayReport> getByMonthString(String monthString, int year){
+    public ArrayList<DayReport> getByMonthString(String monthString, int year){
         return getByMonth(getMonthNumberFromName(monthString), year);
     }
 
@@ -150,6 +151,7 @@ public class DayReportDao extends SQLiteOpenHelper {
         for(int i=0; i<monthNames.length;i++){
             if(monthNames[i].equals(monthName)){
                 index=i;
+                break;
             }
         }
         return index;
@@ -165,9 +167,6 @@ public class DayReportDao extends SQLiteOpenHelper {
         return normalizedMonthNumber;
     }
 
-
-
-
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
@@ -176,6 +175,7 @@ public class DayReportDao extends SQLiteOpenHelper {
         onCreate(db);
         db.close();
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
