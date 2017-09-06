@@ -1,5 +1,7 @@
 package com.evanmoses.churchform.objects;
 
+import java.util.Calendar;
+
 /**
  * Created by Evan on 4/30/2017.
  *
@@ -13,11 +15,12 @@ public class DayReport {
     public String location;
     public String information_concat;
     public String location_concat;
+    public String dayAndMonth;
 
     public DayReport(){
     }
 
-    public DayReport(int date_entered, String place_entered, String information_entered, int mileage_entered){
+    public DayReport(int date_entered, String place_entered, String information_entered, int mileage_entered, String day_entered){
         date = date_entered;
         mileage = mileage_entered;
         information= information_entered;
@@ -32,6 +35,7 @@ public class DayReport {
         }else{
             location_concat = location;
         }
+        dayAndMonth = day_entered;
 
     }
 
