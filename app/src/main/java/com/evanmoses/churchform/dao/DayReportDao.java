@@ -38,7 +38,10 @@ public class DayReportDao extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
+
+        db = getWritableDatabase();
         db.execSQL(SQL_CREATE_ENTRIES);
+        db.close();
     }
 
 
@@ -55,6 +58,7 @@ public class DayReportDao extends SQLiteOpenHelper {
 // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DayReportContract.DayReports.TABLE_NAME, null, values);
 
+        db.close();
 
     }
 
@@ -87,6 +91,7 @@ public class DayReportDao extends SQLiteOpenHelper {
                 }while(cursor.moveToNext());
             }
         }
+        db.close();
 
         return reports;
 
@@ -105,8 +110,10 @@ public class DayReportDao extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
+        db = getWritableDatabase();
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+        db.close();
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
