@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.evanmoses.churchform.objects.DayReport;
+import com.evanmoses.churchform.dao.DayReportsDBHelper;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -19,38 +19,22 @@ import java.util.List;
  * primary
  */
 
-public class DayReportDao extends SQLiteOpenHelper {
-    // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "DayReports.db";
+public class DayReportDao{
+    DayReportsDBHelper dbhelper;
+    Context context;
 
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + DayReportContract.DayReports.TABLE_NAME + " (" +
-                     DayReportContract.DayReports._ID + " INTEGER PRIMARY KEY," +
-                     DayReportContract.DayReports.COLUMN_NAME_DATE + " TEXT," +
-                     DayReportContract.DayReports.COLUMN_NAME_LOCATION + " TEXT," +
-                     DayReportContract.DayReports.COLUMN_NAME_INFORMATION + " TEXT," +
-                     DayReportContract.DayReports.COLUMN_NAME_MILEAGE + " TEXT," +
-                     DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP + " TEXT)";
-
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + DayReportContract.DayReports.TABLE_NAME;
-
-
-    public DayReportDao(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public DayReportDao(Context con){
+        context = con;
+        dbhelper = new DayReportsDBHelper(context);
     }
 
-    public void onCreate(SQLiteDatabase db) {
 
-        db = getWritableDatabase();
-        db.execSQL(SQL_CREATE_ENTRIES);
-        db.close();
-    }
+
+
 
     public void insert(DayReport dr){
         // Gets the data repository in write mode
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
 
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -67,7 +51,7 @@ public class DayReportDao extends SQLiteOpenHelper {
     }
 
     public ArrayList<DayReport> get(String select, String[] selectionArgs){
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
         ArrayList<DayReport> reports = new ArrayList<>();
 
         String sortOrder = DayReportContract.DayReports.COLUMN_NAME_DATE + " DESC";
@@ -165,18 +149,5 @@ public class DayReportDao extends SQLiteOpenHelper {
             normalizedMonthNumber = "" + monthNumber;
         }
         return normalizedMonthNumber;
-    }
-
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        db = getWritableDatabase();
-        db.execSQL(SQL_DELETE_ENTRIES);
-        onCreate(db);
-        db.close();
-    }
-
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
     }
 }
