@@ -8,3 +8,4 @@
 /captures
 .externalNativeBuild
 /.idea
+app/src/main/java/com/evanmoses/churchform/dao/DayReportDao.java.orig
