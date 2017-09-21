@@ -102,7 +102,7 @@ public class DayReportDao{
         switch(month){
             case 0:
                 beginningTimestamp=""+(year-1)+":12:31";
-                endingTimestamp=""+(year)+"02:01";
+                endingTimestamp=""+(year)+":02:01";
                 break;
             case 11:
                 beginningTimestamp=""+(year)+":11:30";
