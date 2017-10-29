@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.Log;
 
 import com.evanmoses.churchform.objects.DayReport;
 import com.evanmoses.churchform.dao.DayReportsDBHelper;
@@ -22,12 +23,14 @@ import java.util.List;
 public class DayReportDao{
     DayReportsDBHelper dbhelper;
     Context context;
-
     public DayReportDao(Context con){
         context = con;
         dbhelper = new DayReportsDBHelper(context);
     }
 
+    public DayReportDao(Context con){
+        context = con;
+        dbhelper = new DayReportsDBHelper(context);
 
 
 
@@ -84,7 +87,7 @@ public class DayReportDao{
         }catch(Exception e){
             Log.v("fixify","cursor exception: " + e.toString());
         }
-        db.close();
+
 
 
         return reports;
@@ -102,7 +105,7 @@ public class DayReportDao{
         switch(month){
             case 0:
                 beginningTimestamp=""+(year-1)+":12:31";
-                endingTimestamp=""+(year)+"02:01";
+                endingTimestamp=""+(year)+":02:01";
                 break;
             case 11:
                 beginningTimestamp=""+(year)+":11:30";
@@ -150,4 +153,5 @@ public class DayReportDao{
         }
         return normalizedMonthNumber;
     }
+
 }
