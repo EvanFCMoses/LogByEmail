@@ -8,3 +8,7 @@
 /captures
 .externalNativeBuild
 /.idea
+
+/dayreportsdatabase.db
+/dayreportsdatabase.sqlite
+/newOutFileName.sqlite
