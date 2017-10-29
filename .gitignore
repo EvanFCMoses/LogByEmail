@@ -12,3 +12,4 @@ app/src/main/java/com/evanmoses/churchform/dao/DayReportDao.java.orig
 /dayreportsdatabase.db
 /dayreportsdatabase.sqlite
 /newOutFileName.sqlite
+/.gitignore.orig
