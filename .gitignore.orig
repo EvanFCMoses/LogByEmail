@@ -1,0 +1,18 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/.idea
+<<<<<<< HEAD
+
+/dayreportsdatabase.db
+/dayreportsdatabase.sqlite
+/newOutFileName.sqlite
+=======
+app/src/main/java/com/evanmoses/churchform/dao/DayReportDao.java.orig
+>>>>>>> I don't want the .orig file
