@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         DayReport toAdd = new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage), prefs.getString("CurrentYear","2017") +
                 ":"+dayReportDao.getMonthNumberStringNormalized(dayReportDao.getMonthNumberFromName(prefs.getString("CurrentMonth","January")))+":"+date);
 
-        dayReportDao.insert(toAdd);
+        //dayReportDao.insert(toAdd);
 
 
         dayReports.add(toAdd);
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeMonth(String month, int currentYear){
-        saveRecords();
+        //saveRecords();
         filled_list.clear();
         loadRecords(month);
         for(int i = 0; i < dayReports.size(); i++){

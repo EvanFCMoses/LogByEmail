@@ -28,10 +28,6 @@ public class DayReportDao{
         dbhelper = new DayReportsDBHelper(context);
     }
 
-    public DayReportDao(Context con){
-        context = con;
-        dbhelper = new DayReportsDBHelper(context);
-
 
 
 
