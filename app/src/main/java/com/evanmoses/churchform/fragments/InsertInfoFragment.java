@@ -56,7 +56,7 @@ public class InsertInfoFragment extends DialogFragment
                 String place = ((EditText)v.findViewById(R.id.entering_place_of_labor)).getText().toString();
                 String information = ((EditText)v.findViewById(R.id.entering_daily_ministry_information)).getText().toString();
                 String mileage = ((TextView)v.findViewById(R.id.entering_mileage)).getText().toString();
-                ((MainActivity)getActivity()).populate_row(date, place, information, mileage);
+                ((MainActivity)getActivity()).insert_row(date, place, information, mileage);
                 dismiss();
             }
         });

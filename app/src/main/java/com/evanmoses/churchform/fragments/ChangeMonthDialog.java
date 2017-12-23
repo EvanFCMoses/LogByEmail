@@ -18,6 +18,9 @@ import com.evanmoses.churchform.activities.MainActivity;
 
 /**
  * Created by Evan on 5/7/2017.
+ *
+ * this is to pop up and allow the user to change the current month thye are looking at
+ *
  */
 
 public class ChangeMonthDialog extends DialogFragment {

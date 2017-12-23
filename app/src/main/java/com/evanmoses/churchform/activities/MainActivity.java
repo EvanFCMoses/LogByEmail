@@ -147,13 +147,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void populate_row(String date, String place, String information, String mileage){
-
-
-
-
-        DayReport toAdd = new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage), prefs.getString("CurrentYear","2017") +
+    private DayReport createDayReportFromInfo(String date, String place, String information, String mileage){
+        return new DayReport(Integer.parseInt(date),place, information, Integer.parseInt(mileage), prefs.getString("CurrentYear","2017") +
                 ":"+dayReportDao.getMonthNumberStringNormalized(dayReportDao.getMonthNumberFromName(prefs.getString("CurrentMonth","January")))+":"+date);
+    }
+
+    public void insert_row(String date, String place, String information, String mileage){
+        DayReport toAdd = createDayReportFromInfo(date,place,information,mileage);
+        dayReportDao.insert(toAdd);
+        populate_row(date, place, information, mileage);
+    }
+
+    public void populate_row(String date, String place, String information, String mileage){
+        
+        DayReport toAdd = createDayReportFromInfo(date,place,information,mileage);
 
         //dayReportDao.insert(toAdd);
 
