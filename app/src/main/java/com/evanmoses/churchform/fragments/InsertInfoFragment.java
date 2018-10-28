@@ -21,9 +21,9 @@ import com.evanmoses.churchform.objects.DayReport;
 
 public class InsertInfoFragment extends DialogFragment
 {
-    private DayReportDao dayReportDao;
+    DayReportDao dayReportDao;
 
-    private View v;
+    View v;
     static public InsertInfoFragment newInstance() {
         InsertInfoFragment f = new InsertInfoFragment();
 

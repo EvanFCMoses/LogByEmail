@@ -179,12 +179,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeMonth(String month, int currentYear){
+        //TODO this is not properly putting the dayrecords into the filled_list before the adapter
         //saveRecords();
         filled_list.clear();
         loadRecords(month);
-        for(int i = 0; i < dayReports.size(); i++){
+        /*for(int i = 0; i < dayReports.size(); i++){
             populate_row(""+dayReports.get(i).date,dayReports.get(i).location,dayReports.get(i).information,""+dayReports.get(i).mileage);
-        }
+        }*/
         adapter.notifyDataSetChanged();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(currentYear + " - " + month);
@@ -196,12 +197,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("CurrentYear",currentYear+"");
         editor.apply();
 
-    }
-
-    public void saveRecords(){
-        for(int i = 0; i<dayReports.size(); i++){
-            dayReportDao.insert(dayReports.get(i));
-        }
     }
 
     public void loadRecords(String month){

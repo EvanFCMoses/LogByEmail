@@ -43,7 +43,7 @@ public class DayReportDao{
         values.put(DayReportContract.DayReports.COLUMN_NAME_MILEAGE, dr.mileage);
         values.put(DayReportContract.DayReports.COLUMN_NAME_TIMESTAMP, dr.dayAndMonth);
 // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(DayReportContract.DayReports.TABLE_NAME, null, values);
+        long newRowId = db.replace(DayReportContract.DayReports.TABLE_NAME, null, values);
 
         db.close();
 
